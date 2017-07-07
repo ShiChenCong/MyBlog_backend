@@ -1,9 +1,6 @@
-// import express from 'express';
-// import http from 'http';
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient,
 	assert = require('assert');
-// const http = require('http');
 const app = express();
 const url = `mongodb://127.0.0.1:27017/blog`; //test 是数据库名称
 const state = {
@@ -17,7 +14,6 @@ var options = {
 };
 // 引入json解析中间件
 const bodyParser = require('body-parser'); //为了能输出req.bodyParser
-// const url = 'mongodb://localhost:27017/myproject';
 // // 添加json解析
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -54,6 +50,17 @@ app.get('/queryAll', async (req, res) => {
 	res.send(data);
 	res.end();
 })
+
+
+//查询标题和时间
+app.get('/queryHeaderAndTime', async (req, res) => {
+	//?xx=xxx 用query /xx/xx 用params
+	const { collection, limit, page } = req.query;
+	let data = await state.db.collection(collection).find({}, {"header":1,"time":1,"_id":0}).limit(Number(limit)).skip(Number(page)).toArray();
+	res.send(data);
+	res.end();
+})
+
 
 //连接数据库
 MongoClient.connect(url, function(err, db) {
