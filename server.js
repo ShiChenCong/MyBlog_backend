@@ -18,7 +18,7 @@ const bodyParser = require('body-parser'); //为了能输出req.bodyParser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-//设置跨域
+//设置跨域 
 app.all('*', function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
