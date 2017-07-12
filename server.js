@@ -56,7 +56,7 @@ app.get('/queryAll', async (req, res) => {
 app.get('/queryHeaderAndTime', async (req, res) => {
 	//?xx=xxx 用query /xx/xx 用params
 	const { collection, limit, page } = req.query;
-	let data = await state.db.collection(collection).find({}, {"header":1,"time":1,"_id":0}).limit(Number(limit)).skip(Number(page)).toArray();
+	let data = await state.db.collection(collection).find({}, {"header":1,"time":1,"_id":-1}).limit(Number(limit)).skip(Number(page)).toArray();
 	res.send(data);
 	res.end();
 })
