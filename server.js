@@ -2,6 +2,7 @@ const express = require('express');
 const MongoClient = require('mongodb').MongoClient,
 	assert = require('assert');
 const app = express();
+const  path = require('path');
 const url = `mongodb://127.0.0.1:27017/blog`; //test 是数据库名称
 const state = {
 	db: null
@@ -27,8 +28,10 @@ app.all('*', function(req, res, next) {
 	next();
 });
 
-app.get('/', function(req, res) {
-	res.send('Hello World!');
+app.get('*', function (req, res) {
+    const indexPath = path.resolve(__dirname, '../MyBlog/index.html');
+    console.log(indexPath)
+    res.sendFile(indexPath);
 });
 
 //添加文章
