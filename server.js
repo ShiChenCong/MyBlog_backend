@@ -19,7 +19,7 @@ const bodyParser = require('body-parser'); //为了能输出req.bodyParser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-//设置跨域 
+//设置跨域
 app.all('*', function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
@@ -27,12 +27,13 @@ app.all('*', function(req, res, next) {
 	res.header("X-Powered-By", ' 3.2.1');
 	next();
 });
-
-app.get('*', function (req, res) {
-    const indexPath = path.resolve(__dirname, '../MyBlog/index.html');
-    console.log(indexPath)
-    res.sendFile(indexPath);
-});
+//
+// app.get('*', function (req, res) {
+//     console.log('xxxxxx')
+//     const indexPath = path.resolve(__dirname, '../MyBlog/index.html');
+//     // console.log(indexPath)
+//     res.sendFile(indexPath);
+// });
 
 //添加文章
 app.post('/addArticle', (req, res) => {
@@ -64,6 +65,13 @@ app.get('/queryHeaderAndTime', async (req, res) => {
 	res.end();
 })
 
+//根据id查询文章
+app.get('/queryById',async (req, res) => {
+	const { id, collection } = req.query;
+	let data = await state.db.collection(collection).findOne({_id: ObjectId(id)});
+	res.send(data);
+	res.end();
+})
 
 //连接数据库
 MongoClient.connect(url, function(err, db) {
