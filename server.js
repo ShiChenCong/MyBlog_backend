@@ -1,6 +1,7 @@
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient,
 	assert = require('assert');
+const ObjectId = require('mongodb').ObjectId;
 const app = express();
 const  path = require('path');
 const url = `mongodb://127.0.0.1:27017/blog`; //test 是数据库名称
@@ -39,7 +40,7 @@ app.all('*', function(req, res, next) {
 app.post('/addArticle', (req, res) => {
 	console.log(req.body); //请求body
 	// res.send('Hello World'); //返回给页面
-	state.db.collection('artilce').insertOne(req.body, (err, r) => { //myblog 是collection名称
+	state.db.collection('article').insertOne(req.body, (err, r) => { //myblog 是collection名称
 		assert.equal(null, err);
 		assert.equal(1, r.insertedCount);
 		// console.log('插入成功')
@@ -50,7 +51,7 @@ app.post('/addArticle', (req, res) => {
 
 //查询全部文章
 app.get('/queryAll', async (req, res) => {
-	let data = await state.db.collection('artilce').find({}).toArray();
+	let data = await state.db.collection('article').find({}).toArray();
 	res.send(data);
 	res.end();
 })
@@ -68,7 +69,7 @@ app.get('/queryHeaderAndTime', async (req, res) => {
 //根据id查询文章
 app.get('/queryById',async (req, res) => {
 	const { id, collection } = req.query;
-	let data = await state.db.collection(collection).findOne({_id: ObjectId(id)});
+	let data = await state.db.collection(collection).findOne({_id:ObjectId(id)});
 	res.send(data);
 	res.end();
 })
